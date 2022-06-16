@@ -53,20 +53,19 @@ func main() {
 	// printMessage(), and main().
 
 	msg = "Hello, world!"
+	msgs := []string{
+		"Hello, universe!",
+		"Hello, cosmos!",
+		"Hello, world!",
+	}
 
-	wg.Add(1)
-	go updateMessage("Hello, universe!")
-	wg.Wait()
-	printMessage()
+	for _, s := range msgs {
+		wg.Add(1)
+		go updateMessage(s)
+		wg.Wait()
+		printMessage()
+	}
 
-	wg.Add(1)
-	go updateMessage("Hello, cosmos!")
 	wg.Wait()
-	printMessage()
-
-	wg.Add(1)
-	go updateMessage("Hello, world!")
-	wg.Wait()
-	printMessage()
 
 }
