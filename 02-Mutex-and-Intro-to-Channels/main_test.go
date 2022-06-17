@@ -1,20 +1,30 @@
 package main
 
 import (
-	"sync"
+	"io"
+	"os"
+	"strings"
 	"testing"
 )
 
-func Test_updateMessage(t *testing.T) {
-	msg = "Hello, world!"
+// go test -race .
+func Test_Main(t *testing.T) {
+	stdOut := os.Stdout
 
-	var m sync.Mutex
+	r, w, _ := os.Pipe()
 
-	wg.Add(1)
-	go updateMessage("Goodbye, cruel world!", &m)
-	wg.Wait()
+	os.Stdout = w
 
-	if msg != "Goodbye, cruel world!" {
-		t.Error("incorrect value in msg")
+	main()
+
+	_ = w.Close()
+
+	result, _ := io.ReadAll(r)
+	output := string(result)
+
+	os.Stdout = stdOut
+
+	if !strings.Contains(output, "$34320.00") {
+		t.Error("Wrong balance found")
 	}
 }
