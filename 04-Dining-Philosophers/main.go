@@ -33,15 +33,15 @@ func diningProblem(philosopher string, leftFork, rightFork *sync.Mutex) {
 	fmt.Println(philosopher, "is seated.")
 	time.Sleep(sleepTime)
 
-	for i := HUNGER; i < 0; i-- {
+	for i := HUNGER; i > 0; i-- {
 		fmt.Println(philosopher, "is hungry.")
 		time.Sleep(sleepTime)
 
 		// lock both forks
 		leftFork.Lock()
-		fmt.Printf("\t%s picked up the fork to his left.", philosopher)
+		fmt.Printf("\t%s picked up the fork to his left.\n", philosopher)
 		rightFork.Lock()
-		fmt.Printf("\t%s picked up the fork to his right.", philosopher)
+		fmt.Printf("\t%s picked up the fork to his right.\n", philosopher)
 
 		// print a message
 		fmt.Println(philosopher, "has both forks and is eating.")
@@ -49,9 +49,9 @@ func diningProblem(philosopher string, leftFork, rightFork *sync.Mutex) {
 
 		// unlock the mutexes
 		rightFork.Unlock()
-		fmt.Printf("\t%s put down the fork on his right.", philosopher)
+		fmt.Printf("\t%s put down the fork on his right.\n", philosopher)
 		leftFork.Unlock()
-		fmt.Printf("\t%s put down the fork on his left.", philosopher)
+		fmt.Printf("\t%s put down the fork on his left.\n", philosopher)
 		time.Sleep(sleepTime)
 	}
 
