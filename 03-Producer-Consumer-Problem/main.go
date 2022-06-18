@@ -104,8 +104,17 @@ func pizzaria(pizzaMaker *Producer) {
 	// until the quit channel receives something.
 	for {
 		currentPizza := makePizza(i)
-		// try to make a pizza
-		// decision
+		if currentPizza != nil {
+			i = currentPizza.pizzaNumber
+			select {
+			// we tried to make a pizza (we sent something to the data channel)
+			case pizzaMaker.data <- *currentPizza:
+			case quitChan := <-pizzaMaker.quit:
+				close(pizzaMaker.data)
+				close(quitChan)
+				return
+			}
+		}
 
 	}
 }
