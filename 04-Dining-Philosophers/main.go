@@ -16,18 +16,31 @@ var (
 	wg           sync.WaitGroup
 )
 
-func diningProblem() {
+func diningProblem(philosopher string, rightFork, leftFork *sync.Mutex) {
 	defer wg.Done()
+
+	// print a message
+
+	// lock both forks
+
+	// print a message
+
+	// unlock the mutexes
 }
 
 func main() {
 	// print intro
 
 	// spawn one goroutine for each philosopher
+	leftFork := &sync.Mutex{}
 	for i := 0; i < len(philosophers); i++ {
+		// create a mutex for the right fork
+		rightFork := &sync.Mutex{}
 		wg.Add(1)
 		// call a goroutine
-		go diningProblem()
+		go diningProblem(philosophers[i], leftFork, rightFork)
+
+		rightFork = leftFork
 	}
 
 	wg.Wait()
