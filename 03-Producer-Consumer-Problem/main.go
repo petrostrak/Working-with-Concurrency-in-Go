@@ -34,7 +34,16 @@ func (p *Producer) Close() error {
 	return <-ch
 }
 
-func pizzaria(pizzaMaker *Producer) {}
+func pizzaria(pizzaMaker *Producer) {
+	// keep track of which pizza we are making
+
+	// run forever or until we receive a quit notification
+	// try to make pizzas
+	for {
+		// try to make a pizza
+		// decision
+	}
+}
 
 func main() {
 	// seed the random number generator
