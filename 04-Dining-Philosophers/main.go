@@ -23,7 +23,8 @@ var (
 	philosophers = []string{"Plato", "Sokrates", "Aristotle", "Niche", "Lao Che"}
 	wg           sync.WaitGroup
 	sleepTime    = 1 * time.Second
-	eatTime      = 3 * time.Second
+	eatTime      = 2 * time.Second
+	thinkTime    = 1 * time.Second
 )
 
 func diningProblem(philosopher string, leftFork, rightFork *sync.Mutex) {
@@ -46,6 +47,10 @@ func diningProblem(philosopher string, leftFork, rightFork *sync.Mutex) {
 		// print a message
 		fmt.Println(philosopher, "has both forks and is eating.")
 		time.Sleep(eatTime)
+
+		// give the philosopher some time to think
+		fmt.Println(philosopher, "is thinking")
+		time.Sleep(thinkTime)
 
 		// unlock the mutexes
 		rightFork.Unlock()
