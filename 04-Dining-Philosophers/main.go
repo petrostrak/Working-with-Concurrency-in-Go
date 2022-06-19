@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"sync"
 	"time"
 )
@@ -20,11 +21,13 @@ const (
 )
 
 var (
-	philosophers = []string{"Plato", "Sokrates", "Aristotle", "Niche", "Lao Che"}
-	wg           sync.WaitGroup
-	sleepTime    = 1 * time.Second
-	eatTime      = 2 * time.Second
-	thinkTime    = 1 * time.Second
+	philosophers  = []string{"Plato", "Sokrates", "Aristotle", "Niche", "Lao Che"}
+	wg            sync.WaitGroup
+	sleepTime     = 1 * time.Second
+	eatTime       = 2 * time.Second
+	thinkTime     = 1 * time.Second
+	orderFinished []string
+	orderMutex    sync.Mutex
 )
 
 func diningProblem(philosopher string, leftFork, rightFork *sync.Mutex) {
@@ -65,6 +68,9 @@ func diningProblem(philosopher string, leftFork, rightFork *sync.Mutex) {
 	time.Sleep(sleepTime)
 
 	fmt.Println(philosopher, "has left the table")
+	orderMutex.Lock()
+	orderFinished = append(orderFinished, philosopher)
+	orderMutex.Unlock()
 }
 
 func main() {
@@ -88,4 +94,5 @@ func main() {
 
 	fmt.Println("------------------")
 	fmt.Println("The table is empty")
+	fmt.Printf("Order finished: %s\n", strings.Join(orderFinished, ", "))
 }
