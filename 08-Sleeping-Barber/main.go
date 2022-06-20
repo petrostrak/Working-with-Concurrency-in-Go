@@ -25,6 +25,15 @@ package main
 import (
 	"math/rand"
 	"time"
+
+	"github.com/fatih/color"
+)
+
+var (
+	seatingCapacity = 10
+	arrivalRate     = 100
+	haircutDuration = 1000 * time.Millisecond
+	timeOpen        = 10 * time.Second
 )
 
 func main() {
@@ -32,10 +41,24 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	// print welcome message
+	color.Yellow("The Sleeping Barber problem")
+	color.Yellow("---------------------------")
 
 	// create channels if we need any
+	clientsChan := make(chan string, seatingCapacity)
+	doneChan := make(chan bool)
 
 	// create the barbershop
+	shop := BarberShop{
+		ShopCapacity:    seatingCapacity,
+		HaircutDuration: haircutDuration,
+		NumberOfBarbers: 0,
+		BarbersDoneChan: doneChan,
+		ClientsChan:     clientsChan,
+		Open:            true,
+	}
+
+	color.Green("The shop is open for the day!")
 
 	// add barbers
 
