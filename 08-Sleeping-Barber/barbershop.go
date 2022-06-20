@@ -73,3 +73,18 @@ func (b *BarberShop) closeShopForDay() {
 	color.Green("---------------------------------------------------------------------")
 	color.Green("The barber shop is now closed for the day and everyone has gone home.")
 }
+
+func (b *BarberShop) addClient(client string) {
+	color.Green("*** %s arrives", client)
+
+	if b.Open {
+		select {
+		case b.ClientsChan <- client:
+			color.Yellow("%s takes a seat in the waiting room.", client)
+		default:
+			color.Red("The waiting room is full, so %s leaves", client)
+		}
+	} else {
+		color.Red("The shop is already closed, so %s leaves", client)
+	}
+}
